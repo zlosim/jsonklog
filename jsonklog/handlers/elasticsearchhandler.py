@@ -16,7 +16,10 @@
 #
 
 import logging
+import datetime
+
 import requests
+import pytz
 
 from jsonklog.handlers.basehandler import RequireJSONFormatter
 
@@ -24,8 +27,11 @@ from jsonklog.handlers.basehandler import RequireJSONFormatter
 class ElasticSearchHandler(RequireJSONFormatter):
 
     def __init__(self, host="localhost", index="logs", port=9200,
-                 doc_type="logs"):
-
+                 doc_type="logs", date_based_index=False, date_format="%Y.%m.%d", date_timezone="UTC"):
+        if date_based_index:
+            tz = pytz.timezone(date_timezone)
+            now = tz.localize(datetime.datetime.now())
+            index = "{}{}".format(index, now.strftime(date_format))
         logging.Handler.__init__(self)
         self.url = 'http://%s:%s/%s/%s' % (host, port, index, doc_type)
 

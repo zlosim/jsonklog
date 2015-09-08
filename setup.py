@@ -26,7 +26,8 @@ CHANGES = open(os.path.join(here, "CHANGES.rst")).read()
 install_requires = [
     "anyjson",
     "pymongo",
-    "requests"
+    "requests",
+    "pytz"
 ]
 
 classifiers = [
