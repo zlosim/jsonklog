@@ -51,12 +51,14 @@ class JSONFormatterTestCase(unittest.TestCase):
         data = json.loads(self.stream.getvalue())
 
         self.assertTrue(data)
-        self.assertTrue('extra' not in data)
+        self.assertTrue('extra' in data)
         self.assertEqual(self.log.name, data['name'])
 
         self.assertEqual(test_msg % test_data, data['message'])
+        self.assertEqual(data["extra"], {})
         self.assertEqual(test_msg, data['msg'])
-        self.assertEqual(test_data, data['args'])
+        self.assertEqual("{}".format(test_data), data['args'])
+
 
         self.assertEqual('test.py', data['filename'])
         self.assertEqual('test_json', data['funcname'])
@@ -75,7 +77,7 @@ class JSONFormatterTestCase(unittest.TestCase):
 
         data = json.loads(self.stream.getvalue())
 
-        self.assertEqual([test_data], data['args'])
+        self.assertEqual("{}".format((test_data,)), data['args'])
 
         self.assertEqual('ERROR', data['levelname'])
         self.assertEqual(logging.ERROR, data['levelno'])
