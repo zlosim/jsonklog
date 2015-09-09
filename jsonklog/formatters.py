@@ -42,7 +42,7 @@ class JSONFormatter(logging.Formatter):
         msg = {'message': record.getMessage(),
                'asctime': self.formatTime(record, self.datefmt),
                'name': record.name,
-               'service_name': self.name,
+               'service_name': self.service_name,
                'msg': record.msg,
                'args': "{}".format(record.args),
                'levelname': record.levelname,
