@@ -28,6 +28,7 @@ class JSONFormatter(logging.Formatter):
         self.datefmt = datefmt
         self.dump_json = dump_json
         self.extra = kwargs.get("extra", {})
+        self.service_name = kwargs.get("service_name", None)
 
     def formatException(self, ei, strip_newlines=True):
         lines = traceback.format_exception(*ei)
@@ -41,6 +42,7 @@ class JSONFormatter(logging.Formatter):
         msg = {'message': record.getMessage(),
                'asctime': self.formatTime(record, self.datefmt),
                'name': record.name,
+               'service_name': self.name,
                'msg': record.msg,
                'args': "{}".format(record.args),
                'levelname': record.levelname,
