@@ -36,7 +36,7 @@ class JSONFormatterTestCase(unittest.TestCase):
         self.stream = StringIO.StringIO()
 
         handler = logging.StreamHandler(self.stream)
-        handler.setFormatter(JSONFormatter())
+        handler.setFormatter(JSONFormatter(extra={"service_name": "xyz"}))
 
         self.log.addHandler(handler)
         self.log.setLevel(logging.DEBUG)
@@ -47,16 +47,17 @@ class JSONFormatterTestCase(unittest.TestCase):
     def test_json(self):
         test_msg = 'This is a %(test)s line'
         test_data = {'test': 'log'}
-        self.log.debug(test_msg, test_data)
+        self.log.debug(test_msg, test_data, extra={'test': 'log', "extra": {"1": "2"}})
         data = json.loads(self.stream.getvalue())
 
         self.assertTrue(data)
-        self.assertTrue('extra' in data)
+        self.assertFalse('extra' in data)
+        self.assertTrue('service_name' in data)
+        self.assertTrue('1' in data)
         self.assertEqual(self.log.name, data['name'])
-
+        self.assertEqual("xyz", data['service_name'])
+        self.assertEqual("2", data['1'])
         self.assertEqual(test_msg % test_data, data['message'])
-        self.assertEqual(data["extra"], {})
-        self.assertEqual(test_msg, data['msg'])
         self.assertEqual("{}".format(test_data), data['args'])
 
 

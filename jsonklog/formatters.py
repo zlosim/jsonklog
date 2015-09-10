@@ -15,7 +15,6 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-import copy
 import logging
 import traceback
 import itertools
@@ -28,7 +27,6 @@ class JSONFormatter(logging.Formatter):
         self.datefmt = datefmt
         self.dump_json = dump_json
         self.extra = kwargs.get("extra", {})
-        self.service_name = kwargs.get("service_name", None)
 
     def formatException(self, ei, strip_newlines=True):
         lines = traceback.format_exception(*ei)
@@ -42,7 +40,6 @@ class JSONFormatter(logging.Formatter):
         msg = {'message': record.getMessage(),
                'asctime': self.formatTime(record, self.datefmt),
                'name': record.name,
-               'service_name': self.service_name,
                'args': "{}".format(record.args),
                'levelname': record.levelname,
                'levelno': record.levelno,
@@ -58,11 +55,10 @@ class JSONFormatter(logging.Formatter):
                'thread_name': record.threadName,
                'process_name': record.processName,
                'process': record.process,
-               'extra': copy.deepcopy(self.extra),
                'traceback': None}
-
+        msg.update(self.extra)
         if hasattr(record, 'extra'):
-            msg['extra'].update(record.extra)
+            msg.update(record.extra)
 
         if record.exc_info:
             msg['traceback'] = self.formatException(record.exc_info)
