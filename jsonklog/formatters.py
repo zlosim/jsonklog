@@ -38,7 +38,7 @@ class JSONFormatter(logging.Formatter):
 
     def format(self, record):
         msg = {'message': record.getMessage(),
-               '@timezone': self.formatTime(record, self.datefmt),
+               '@timestamp': self.formatTime(record, self.datefmt),
                'name': record.name,
                'args': "{}".format(record.args),
                'severity': record.levelname,
@@ -73,7 +73,7 @@ class JSONFormatterSimple(JSONFormatter):
 
     def format(self, record):
         msg = {'message': record.getMessage(),
-               '@timezone': self.formatTime(record, self.datefmt),
+               '@timestamp': self.formatTime(record, self.datefmt),
                'severity': record.levelname,
                'traceback': None}
 
