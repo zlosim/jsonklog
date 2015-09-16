@@ -38,10 +38,10 @@ class JSONFormatter(logging.Formatter):
 
     def format(self, record):
         msg = {'message': record.getMessage(),
-               'asctime': self.formatTime(record, self.datefmt),
+               '@timezone': self.formatTime(record, self.datefmt),
                'name': record.name,
                'args': "{}".format(record.args),
-               'levelname': record.levelname,
+               'severity': record.levelname,
                'levelno': record.levelno,
                'pathname': record.pathname,
                'filename': record.filename,
@@ -73,8 +73,8 @@ class JSONFormatterSimple(JSONFormatter):
 
     def format(self, record):
         msg = {'message': record.getMessage(),
-               'asctime': self.formatTime(record, self.datefmt),
-               'levelname': record.levelname,
+               '@timezone': self.formatTime(record, self.datefmt),
+               'severity': record.levelname,
                'traceback': None}
 
         if hasattr(record, 'extra'):

@@ -59,8 +59,6 @@ class JSONFormatterTestCase(unittest.TestCase):
         self.assertEqual("2", data['1'])
         self.assertEqual(test_msg % test_data, data['message'])
         self.assertEqual("{}".format(test_data), data['args'])
-
-
         self.assertEqual('test.py', data['filename'])
         self.assertEqual('test_json', data['funcname'])
         self.assertEqual('DEBUG', data['levelname'])
